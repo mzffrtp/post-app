@@ -12,7 +12,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }))
 app.use(bodyParser.json({ urlencoded: "30mb", extended: true }))
 
 //routes
-app.use("/api/v1/auth", authRouter)
+app.use("/", authRouter)
 //!undefined port error
 app.all("*", (req, res, next) => {
     next(new AppError("Undefined path, check your URL", 400))

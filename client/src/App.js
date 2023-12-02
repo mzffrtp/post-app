@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import HomePage from "./pages/Home";
 import AuthPage from "./pages/Auth";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
           <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 }
