@@ -1,13 +1,15 @@
 import React, { useState } from "react"
 import { loginAction, registerAction } from "../../redux/actions/authActions"
 import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 export default function AuthPage() {
     const [signUp, setSignUp] = useState(true)
     const [authData, setAuthData] = useState({
-        username:"", email: "", password: ""
+        username:"", email: "", password: "", passwordConfirm: ""
     })
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     const onChangeValue = (e) => {
         setAuthData ({...authData, [e.target.name]: e.target.value})
@@ -16,17 +18,19 @@ export default function AuthPage() {
     const authFunction = () => {
         if (signUp) {
             dispatch(registerAction(authData))
+            navigate("/")
+
         } else {
             dispatch(loginAction(authData))
+            navigate("/")
         }       
     }
 
-    console.log("authData-->", authData);
     return (
-        <div className="w-full h-screen bg-pink-100 flex items-center justify-center fixed top-0 right-0 bottom-0 left-0 z-50">
-            <div className="w-1/3 bg-orange-100">
-            <div className="text-2xl text-red-500 font-bold flex justify-center pt-2">{signUp ? "REGISTER": "LOGIN"}</div>
-            <div className=" flex flex-col bg-orange-50 space-y-3 my-5">
+        <div className="w-full h-screen bg-gray-100 flex items-center justify-center fixed top-0 right-0 bottom-0 left-0 z-50">
+            <div className="w-1/3 bg-white">
+            <div className="text-2xl text-red-500 font-bold flex justify-center items-center pt-2">{signUp ? "REGISTER": "LOGIN"}</div>
+            <div className=" flex flex-col bg-gray-100 mb-2">
 
                 {signUp && 
                 <input 
@@ -52,9 +56,18 @@ export default function AuthPage() {
                 type="text" 
                 placeholder="Password" 
                 className="input-style"/>
+
+            {signUp && 
+                <input 
+                value={authData.passwordConfirm} 
+                name="passwordConfirm" 
+                onChange={onChangeValue} 
+                type="text" 
+                placeholder="Confirm password" 
+                className="input-style"/>}
             </div>
-            <div className="text-red-500 text-xs cursor-pointer mb-4">
-               {signUp ? <span onClick = {()=>setSignUp(false)}>You have already registered? Click to login!</span> :
+            <div className="text-red-500 text-xs cursor-pointer my-2 text-center">
+               {signUp ? <span  onClick = {()=>setSignUp(false)}>You have already registered? Click to login!</span> :
                 <span onClick= {()=>setSignUp(true)}>Click to register!</span>}
             </div>
             <div onClick={authFunction} className="cursor-pointer hover:bg-lime-400 w-full p-2 text-center bg-lime-100 text-dark rounded-md">{signUp ? "Register": "Login"}</div>

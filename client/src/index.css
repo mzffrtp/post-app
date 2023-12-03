@@ -4,6 +4,6 @@
 
 @layer components {
     .input-style {
-        @apply border p-2 rounded-md outline-none
+        @apply border p-2 my-2 rounded-md outline-none
     }
 }

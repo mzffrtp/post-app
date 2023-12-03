@@ -6,62 +6,60 @@ const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
-//! Create JWT Token
-const signToken = (id) => {
-    return (token = jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES
-    }))
-};
 
-//! Sent token to user
-const createSendToken = (user, statusCode, res) => {
-    const token = signToken(user._id)
+exports.register = async (req, res, next) => {
+    try {
+        const { username, email, password, passwordConfirm } = req.body;
 
-    //! token should be send by cookies
+        const userCheck = await User.findOne({ email })
 
-    res.cookie("jwt", token, {
-        expires: moment(Date.now()).add(90, "days").toDate(),
-        httpOnly: true,
-        secure: false //! true after deployment
-    })
+        if (userCheck) return next(new AppError("This user already exsits, please login!", 400));
 
-    res.status(statusCode).json({
-        status: "success",
-        data: { user }
-    })
+        const newUser = await User.create(req.body)
+
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES
+        })
+
+        res.status(201).json({
+            status: "success",
+            message: "User registered successfully!",
+            newUser,
+            token
+        })
+    } catch (error) {
+        res.status(201).json({
+            status: "failed",
+            message: error.message
+        })
+    }
 }
-exports.register = catchAsync(async (req, res, next) => {
-    const { username, email, password, passwordConfirm } = req.body;
 
-    const userCheck = await User.findOne({ email })
-    console.log(userCheck);
+exports.login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body
+        const user = await User.findOne(email)
 
-    if (userCheck) return next(new AppError("This user already exsits, please login!", 400));
+        if (!user) {
+            return next(new AppError("There is no such a user!", 400))
+        }
 
-    const newUser = await User.create(req.body)
-    console.log("newUser-->", newUser);
-    await createSendToken(newUser, 200, res)
-})
+        const passwrodComparw = await bcrypt.compare(password, user.password)
 
-exports.login = catchAsync(async (req, res, next) => {
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES
+        })
 
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        next(new AppError("Email and password should not be blank!"))
+        res.status(201).json({
+            status: "success",
+            message: "User registered successfully!",
+            newUser,
+            token
+        })
+    } catch (error) {
+        res.status(201).json({
+            status: "failed",
+            message: error.message
+        })
     }
-
-    const user = await User.findOne({ email }).select("+password")
-
-    if (!user) {
-        return next(new AppError("Email or password wrong, please try again", 400))
-    }
-
-    const isCorrectPassword = await bcrypt.compare(password, user.password)
-
-    if (!isCorrectPassword) {
-        return next(new AppError("Email or password wrong, please try again", 400))
-    }
-
-    createSendToken(user, 200, res)
-})
+}
