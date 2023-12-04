@@ -12,7 +12,7 @@ export const registerAction = (authData) => async (dispatch) => {
             type: "REGISTER", payload: data,
         })
     } catch (error) {
-        toast.error(error.response?.data?.message)
+        alert(error)
     }
 }
 
@@ -25,8 +25,7 @@ export const loginAction = (authData) => async (dispatch) => {
         dispatch({
             type: "LOGIN", payload: data
         })
-        window.location("/")
     } catch (error) {
-        toast.error(error.response.data.msg)
+        alert(error)
     }
 }

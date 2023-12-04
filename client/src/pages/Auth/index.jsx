@@ -19,7 +19,6 @@ export default function AuthPage() {
         if (signUp) {
             dispatch(registerAction(authData))
             navigate("/")
-
         } else {
             dispatch(loginAction(authData))
             navigate("/")
@@ -27,7 +26,7 @@ export default function AuthPage() {
     }
 
     return (
-        <div className="w-full h-screen bg-gray-100 flex items-center justify-center fixed top-0 right-0 bottom-0 left-0 z-50">
+        <div className="w-full h-screen bg-gray-100 flex items-center justify-center z-50">
             <div className="w-1/3 bg-white">
             <div className="text-2xl text-red-500 font-bold flex justify-center items-center pt-2">{signUp ? "REGISTER": "LOGIN"}</div>
             <div className=" flex flex-col bg-gray-100 mb-2">

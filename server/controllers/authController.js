@@ -38,7 +38,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body
-        const user = await User.findOne(email)
+        const user = await User.findOne({ email })
 
         if (!user) {
             return next(new AppError("There is no such a user!", 400))
