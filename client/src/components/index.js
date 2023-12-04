@@ -14,12 +14,12 @@ const Navbar = () => {
         dispatch({
             type: "MODAL", payload: true
         })
-        console.log("clicked open modal");
     }
+
     return (
         <div className='h-20 bg-indigo-600 flex justify-between items-center p-3'>
-            <div className='text-white font-bold text-2xl cursor-poi
-            '>Share Post</div>
+            <div className='text-white font-bold text-2xl cursor-pointer'
+            >Share Post</div>
             <div className='flex items-center space-x-5'>
                 <input type='text' placeholder='Search ...' className='p-2 outline-none rounded-md' />
                 <div

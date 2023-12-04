@@ -10,23 +10,19 @@ import { useSelector } from "react-redux";
 
 function App() {
   const [token] = useToken();
-  console.log("auth-->", token);
   const { modal } = useSelector(state => state.modal)
-  console.log("modal-->", modal);
 
   return (
     <div>
       <BrowserRouter>
+        <ToastContainer />
         {token?.token && <Navbar />}
         {modal && <PostCreatModal />}
         <Routes>
-          <Route path="/" element={
-            // !token?.token ? <Link to={"/auth"} /> : 
-            <HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </BrowserRouter>
-      <ToastContainer />
     </div>
   );
 }

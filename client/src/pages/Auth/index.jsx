@@ -18,7 +18,6 @@ export default function AuthPage() {
     const authFunction = () => {
         if (signUp) {
             dispatch(registerAction(authData))
-            navigate("/")
         } else {
             dispatch(loginAction(authData))
             navigate("/")

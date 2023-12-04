@@ -5,8 +5,8 @@ const postRouter = express.Router()
 
 postRouter.get("/getPosts", getPosts)
 postRouter.post("/createPost", creatPost)
-postRouter.patch("/updatePost", updatePost)
-postRouter.delete("/deletePost", deletePost)
+postRouter.patch("/updatePost/:id", updatePost)
+postRouter.delete("/deletePost/:id", deletePost)
 
 
 module.exports = postRouter

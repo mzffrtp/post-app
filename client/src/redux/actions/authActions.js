@@ -12,6 +12,7 @@ export const registerAction = (authData) => async (dispatch) => {
             type: "REGISTER", payload: data,
         })
     } catch (error) {
+        console.log("error-->", error);
         alert(error)
     }
 }
